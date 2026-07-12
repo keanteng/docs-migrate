@@ -14,22 +14,22 @@ git rm -r --cached folder
 
 ## Setting Up Remote Committing to AWS CodeCommit
 
-To set up remote committing to AWS CodeCommit, use the following commands:
+To set up codecommit, use the following commands:
 
 ```bash
 # if you are on windows
-export PATH="$PATH:/C/Users/CE223QW/AppData/Local/Programs/Python/Python312/Scripts"
+export PATH="$PATH:/C/Users/benjamine/AppData/Local/Programs/Python/Python312/Scripts"
 
 # make sure directory is correct
-cd tnbgenai-app-llm-talent-nexus-ai
-# create a new branch called keanteng
-git checkout -b keanteng
+cd my_folder
+# create a new branch called benjamine
+git checkout -b benjamine
 # first time commit name and email setup
-git config user.name "VDR0xxxxx"
-git config user.email "VDR0xxxxx@tnb.com.my"
+git config user.name "benjamine"
+git config user.email "benjamine.github.com"
 git add .
 git commit -m "Your changes"
-git push -u origin keanteng
+git push -u origin benjamine
 ```
 
 ## Renaming Remote Branch on Cloud Repo

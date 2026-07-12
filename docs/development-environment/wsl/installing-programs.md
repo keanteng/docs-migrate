@@ -8,12 +8,15 @@ title: Installing Useful Programs
 
 To install AWS CLI, use the following commands:
 
-```bash
+```bash showLineNumbers
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 sudo ./aws/install
-aws configure sso
+```
 
+After installation you can setup your profile by typing `aws configure sso`. To update the software use the following command:
+
+```bash showLineNumbers
 # to update
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
@@ -28,34 +31,26 @@ which aws
 
 You might get SSL issue when you first time configure, add to your `.zshrc` or `.bashrc`:
 
-```bash
+```bash title=".bashrc"
 export AWS_CA_BUNDLE="/etc/ssl/certs/ca-certificates.crt"
 export REQUESTS_CA_BUNDLE="/etc/ssl/certs/ca-certificates.crt"
 export SSL_CERT_FILE="/etc/ssl/certs/ca-certificates.crt"
 ```
 
-Use the following list of parameters for the configure command:
-
-- `https://tnbaws.awsapps.com/start/#`
-- `ap-southeast-1`
-- `TNBQEYDeveloperAccess-975050198429`
-- `json`
-
 It would be bad if we need to rerun `aws configure sso` every time we open a new terminal. To avoid that, we can instead run:
 
 ```bash
-aws sso login --profile "TNBQEYDeveloperAccess-975050198429"
+aws sso login --profile <profile_name>
 ```
 
 ## Installing Oh My Zsh
 
-If you want the terminal to look cool like a pro, check [Oh My Zsh](https://ohmyz.sh/).
+If you want the terminal to look cool like a pro, check out [Oh My Zsh](https://ohmyz.sh/).
 
-```bash
+```bash showLineNumbers
 sudo apt update
 sudo apt install zsh -y
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-nano ~/.zshrc
 ```
 
 If you want to activate the Powerlevel10k theme, do the following:
@@ -69,25 +64,19 @@ First install the fonts:
 ```bash
 # install powerlevel10k
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+```
 
-# set ZSH_THEME="powerlevel10k/powerlevel10k" in ~/.zshrc
-nano ~/.zshrc
-source ~/.zshrc
+Then configure your theme:
+
+```bash title=".zshrc"
+ZSH_THEME="powerlevel10k/powerlevel10k" 
 ```
 
 You can run `p10k configure` to reconfigure the theme. But before that make sure you change the font settings on both terminal and VSCode to MesloLGS NF. This is super important.
 
-There are cases where the terminal does not load properly showing the below text:
+There are cases where the terminal does not load properly and to ensure all the terminal sessions are properly loaded, use the following code:
 
-```
-XWPF5V0FVF% source /home/keanteng/repositories/weknow-talent-nexus/.venv/bin/activate
-```
-
-To ensure all the terminal sessions are properly loaded, use the following code:
-
-```bash
-nano ~/.zshenv
-
+```bash showLineNumbers title=".zshrc"
 if [[ -o interactive ]]; then
   source ~/.zshrc
 fi
@@ -97,7 +86,7 @@ fi
 
 To install Golang, use the following command:
 
-```bash
+```bash showLineNumbers
 sudo apt update && sudo apt upgrade -y
 
 wget -4 https://go.dev/dl/go1.22.0.linux-amd64.tar.gz
@@ -115,7 +104,7 @@ go version
 
 To install zip, unzip and git, use the following command:
 
-```bash
+```bash showLineNumbers
 sudo apt install zip unzip git -y
 ```
 
@@ -127,25 +116,20 @@ zip -r filename.zip foldername
 
 ## Installing Claude Code
 
-Here I will show you how to connect AWS Bedrock Claude model with Claude Code:
+Here I will show you how to use Claude Code:
 
 ```bash
 # install
 curl -fsSL https://claude.ai/install.sh | bash
-# setup
-nano ~/.zshrc
+```
+
+```bash title=".zshrc"
 export CLAUDE_CODE_USE_BEDROCK=1
-export AWS_REGION=ap-southeast-1
-export ANTHROPIC_MODEL='apac.anthropic.claude-sonnet-4-20250514-v1:0'
+export AWS_REGION=us-east-1
+export ANTHROPIC_MODEL='global.anthropic.claude-sonnet-2'
 export CLAUDE_CODE_MAX_OUTPUT_TOKENS=8192
 export MAX_THINKING_TOKENS=2048
-export AWS_PROFILE=TNBQEYDeveloperAccess-975050198429
-source ~/.zshrc
-# need to run these before using
-export AWS_ACCESS_KEY_ID=
-export AWS_SECRET_ACCESS_KEY=
-export AWS_SESSION_TOKEN=
-claude
+export AWS_PROFILE=<profile_name>
 ```
 
 > Don't use too much to avoid blowing up your AWS credits.
@@ -154,7 +138,7 @@ claude
 
 To install Azure Functions, use the following commands:
 
-```bash
+```bash showLineNumbers
 curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/microsoft.gpg > /dev/null
 sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-$(lsb_release -cs 2>/dev/null)-prod $(lsb_release -cs 2>/dev/null) main" > /etc/apt/sources.list.d/dotnetdev.list'
 sudo apt-get install azure-functions-core-tools-4
@@ -166,7 +150,7 @@ func # if it shows something then install is success
 
 To install LibreOffice, use the following commands:
 
-```bash
+```bash showLineNumbers
 sudo apt update
 sudo apt install libreoffice
 ```
@@ -175,7 +159,7 @@ sudo apt install libreoffice
 
 The local Docker Desktop is heavy and eats a lot of RAM. Instead, we can install Docker Engine in WSL Ubuntu. To install Docker Engine, use the following commands:
 
-```bash
+```bash showLineNumbers
 # 1. Update apt and install packages to allow apt to use a repository over HTTPS
 sudo apt-get update
 sudo apt-get install ca-certificates curl gnupg
@@ -201,7 +185,7 @@ sudo usermod -aG docker $USER
 
 However, Docker will start when Ubuntu starts which will hog memory, to stop it when not in use:
 
-```bash
+```bash showLineNumbers
 # Disable the service from starting at boot
 sudo systemctl disable docker
 
@@ -219,7 +203,7 @@ sudo systemctl start docker docker.socket
 
 To install NodeJS, use the following commands:
 
-```bash
+```bash showLineNumbers
 curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 source ~/.zshrc
 nvm --version
@@ -233,17 +217,17 @@ npm -v
 
 How I created this document? Using Texlive. To install Texlive, use the following commands:
 
-```bash
+```bash showLineNumbers
 sudo apt update
 sudo apt install texlive-latex-base texlive-latex-recommended texlive-latex-extra texlive-science latexmk python3-pygments
 sudo apt install texlive-bibtex-extra biber
 ```
 
-## Installing uv — Python Package Installer
+## Installing `uv`
 
 `uv` is built with Rust and is lightning fast. To install `uv`, use the following command:
 
-```bash
+```bash showLineNumbers
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # start venv
@@ -275,13 +259,22 @@ ty check .
 pre-commit run
 ```
 
-## Installing Brew
+## Installing `brew`
 
 `brew` is a package manager for Linux. To install `brew`, use the following command:
 
-```bash
+```bash showLineNumbers
 sudo apt update && sudo apt install build-essential procps curl file git
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.bashrc
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+```
+
+## Installing `minikube`
+
+We can install `minkube` on our local computer to simulate kubernetes cluster:
+
+```bash showLineNumbers
+curl -LO https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64
+sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
 ```

@@ -5,9 +5,9 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'Docs',
+  title: 'Kean Teng Docs',
   tagline: 'Learning documentation from work and personal projects',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.png',
 
   themes: [
     [
@@ -28,17 +28,32 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  url: 'https://keantengblog.github.io',
+  url: 'https://keantengdocs.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/keanteng-blog-docs/',
+  baseUrl: '/keantengdocs/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'keanteng', // Usually your GitHub org/user name.
-  projectName: 'keanteng-blog-docs', // Usually your repo name.
+  projectName: 'keantengdocs', // Usually your repo name.
 
   onBrokenLinks: 'throw',
+
+  headTags: [
+    {
+      tagName: 'style',
+      attributes: {},
+      innerHTML: `
+        .goog-te-banner-frame.skiptranslate { display: none !important; }
+        .goog-logo-link { display: none !important; }
+        .goog-te-gadget { color: transparent !important; }
+        body { top: 0px !important; }
+        .goog-tooltip { display: none !important; }
+        .goog-tooltip:hover { display: none !important; }
+      `,
+    },
+  ],
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
@@ -56,7 +71,7 @@ const config: Config = {
           sidebarPath: './sidebars.ts',
           showLastUpdateTime: true,
           editUrl:
-            'https://github.com/keanteng/keanteng-blog-docs/tree/main/',
+            'https://github.com/keanteng/keantengdocs/tree/main/',
         },
         blog: false,
         theme: {
@@ -68,21 +83,15 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
+    image: 'img/favicon.png',
     colorMode: {
       respectPrefersColorScheme: true,
     },
     navbar: {
-      title: 'weKNOW Docs',
+      title: 'Kean Teng Docs',
       items: [
         {
-          type: 'docSidebar',
-          sidebarId: 'docsSidebar',
-          position: 'left',
-          label: 'Docs',
-        },
-        {
-          href: 'https://github.com/keanteng/keanteng-blog-docs',
+          href: 'https://github.com/keanteng/keantengdocs',
           label: 'GitHub',
           position: 'right',
         },
@@ -94,17 +103,17 @@ const config: Config = {
         {
           title: 'Sections',
           items: [
-            { label: 'WSL Setup', to: '/docs/wsl' },
-            { label: 'Git', to: '/docs/git' },
-            { label: 'Terminal', to: '/docs/terminal' },
-            { label: 'AWS CLI', to: '/docs/aws-cli' },
-            { label: 'Docker', to: '/docs/docker' },
+            { label: 'Development Environment', to: '/docs/development-environment/wsl' },
+            { label: 'Version Control (Git)', to: '/docs/version-control/git' },
+            { label: 'Cloud & DevOps', to: '/docs/cloud-devops/aws-cli' },
+            { label: 'Docker', to: '/docs/cloud-devops/docker' },
+            { label: 'Other Tools', to: '/docs/other-tools/others' },
           ],
         },
         {
           title: 'More',
           items: [
-            { label: 'GitHub', href: 'https://github.com/keanteng/keanteng-blog-docs' },
+            { label: 'GitHub', href: 'https://github.com/keanteng/keantengdocs' },
           ],
         },
       ],
@@ -113,6 +122,7 @@ const config: Config = {
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
+      additionalLanguages: ['powershell', 'bash', 'docker', 'yaml', 'json'],
     },
   } satisfies Preset.ThemeConfig,
 };

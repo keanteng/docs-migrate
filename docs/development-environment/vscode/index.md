@@ -8,7 +8,7 @@ title: Visual Studio Code (VSCode) Tips
 
 The selected file will have indent highlight to show the folder structure better, especially for nested folders. Add this to your `settings.json`:
 
-```json
+```json showLineNumbers
 "workbench.tree.indent": 15,
 "workbench.tree.renderIndentGuides": "always",
 "workbench.colorCustomizations": {

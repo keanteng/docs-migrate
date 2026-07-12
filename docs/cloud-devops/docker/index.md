@@ -8,7 +8,7 @@ title: Docker Usage Tips
 
 Here are some basic Docker commands that are useful for managing Docker containers and images:
 
-```bash
+```bash showLineNumbers
 # run the image
 docker run --name gremlin-server -p 8182:8182 tinkerpop/gremlin-server
 

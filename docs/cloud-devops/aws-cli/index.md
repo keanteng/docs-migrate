@@ -8,7 +8,7 @@ title: AWS CLI Tips
 
 To check your Bedrock quota limit using AWS CLI, use the following command:
 
-```bash
+```bash showLineNumbers
 aws service-quotas list-service-quotas \
   --service-code bedrock \
   --query "Quotas[?contains(QuotaName, 'Claude Sonnet') && contains(QuotaName, '4.5')].[QuotaName, Value, Unit]" \
@@ -17,7 +17,7 @@ aws service-quotas list-service-quotas \
 
 If you want to get the model ID for other models, you can use the following command:
 
-```bash
+```bash showLineNumbers
 # get model id
 aws bedrock list-foundation-models \
   --query "modelSummaries[].{modelId:modelId,provider:providerName,modelName:modelName,output:outputModalities,input:inputModalities}" \
@@ -33,7 +33,7 @@ aws bedrock list-inference-profiles \
 
 To list all running EC2 instances in a specific region, use the following command:
 
-```bash
+```bash showLineNumbers
 # show all instances
 aws ec2 describe-instances \
   --query "Reservations[].Instances[].{
@@ -64,15 +64,15 @@ aws ec2 describe-instances \
 
 To find out the AWS identity you are currently using, you can use the following command:
 
-```bash
+```bash showLineNumbers
 aws sts get-caller-identity
 ```
 
 Use the credential above to check what you can do:
 
-```bash
+```bash showLineNumbers
 aws iam list-attached-role-policies \
-  --role-name AWSReservedSSO_TNBQEYDeveloperAccess_4999a040a109e7af \
+  --role-name <role_name>\
   --output table
 ```
 
@@ -82,7 +82,7 @@ After checking, I am not an IAM user, but SSO user assuming IAM role. So my acce
 
 To check how much your AWS account has spent until now in the current month, you can use the following command:
 
-```bash
+```bash showLineNumbers
 aws ce get-cost-and-usage \
   --time-period Start=2026-01-01,End=2026-01-24 \
   --granularity MONTHLY \
@@ -99,31 +99,31 @@ aws eks list-clusters --output table
 
 Here are some commands once you know the cluster name:
 
-```bash
+```bash showLineNumbers
 # describe cluster
 aws eks describe-cluster \
-  --name tnbgai-dev-eks-cluster-001 \
+  --name benjamine-cluster-001 \
   --query "cluster" \
   --output json
 
 # list nodes in the cluster
 aws eks list-nodegroups \
-  --cluster-name tnbgai-dev-eks-cluster-001 \
+  --cluster-name benjamine-cluster-001 \
   --output table
 
 # describe node group
 aws eks describe-nodegroup \
-  --cluster-name tnbgai-dev-eks-cluster-001 \
-  --nodegroup-name tnbgai-dev-eks-cluster-ng-001 \
+  --cluster-name benjamine-cluster-001 \
+  --nodegroup-name benjamine-cluster-001 \
   --output json
 
 # see the pods in the cluster
-aws eks update-kubeconfig --name tnbgai-dev-eks-cluster-001 --region ap-southeast-1 && kubectl get pods -A
+aws eks update-kubeconfig --name benjamine-cluster-001 --region ap-southeast-3 && kubectl get pods -A
 ```
 
 You can install `kubectl` using the following command:
 
-```bash
+```bash showLineNumbers
 sudo apt-get update && sudo apt-get install -y kubectl
 
 # check if installed
@@ -140,17 +140,17 @@ aws codecommit list-repositories --query "repositories[].repositoryName" --outpu
 
 Some tips to work on a specific repository, use the following command:
 
-```bash
+```bash showLineNumbers
 # get the default branch of a repository
 aws codecommit get-repository --repository-name MyRepo --query "repositoryMetadata.defaultBranch" --output text
 
 # get the head commit of that branch
-aws codecommit get-branch --repository-name "tnbgenai-app-llm-talent-nexus-ai" --branch-name master
+aws codecommit get-branch --repository-name "benjamine_franklin" --branch-name master
 ```
 
 List all the repos with their cloning URL:
 
-```bash
+```bash showLineNumbers
 aws codecommit list-repositories \
   --query "repositories[].repositoryName" \
   --output text |
@@ -177,8 +177,8 @@ aws rds describe-db-instances \
 
 Then we run the below code to find the connection limit:
 
-```bash
-DBS=("tnbgai-dev-db-001" "tnbgai-dev-db-002" "tnbgai-test-db-001" "tnbgai-test-db-002")
+```bash showLineNumbers
+DBS=("foo", "boo", "loo")
 
 printf "%-22s | %-35s | %-25s | %-10s | %-12s\n" "DBInstanceIdentifier" "ParameterGroup" "max_connections" "Source" "IsModifiable"
 
@@ -214,11 +214,11 @@ done
 
 We will get something like `LEAST({DBInstanceClassMemory/9531392},5000)` but the exact amount is not known. Let's check the instance type:
 
-```bash
+```bash showLineNumbers
 aws rds describe-db-instances \
-  --db-instance-identifier tnbgai-dev-db-001 \
+  --db-instance-identifier benjamine-franklin \
   --query "DBInstances[0].{Id:DBInstanceIdentifier,Class:DBInstanceClass,Engine:Engine}" \
-  --region ap-southeast-1 \
+  --region ap-southeast-3 \
   --output table
 ```
 
@@ -229,4 +229,38 @@ max_connections = LEAST(DBInstanceClassMemory / 9531392, 5000)
                 = LEAST(4294967296 / 9531392, 5000)
                 ≈ LEAST(450.4, 5000)
                 ≈ 450
+```
+
+## Working With EKS Pods
+
+```bash showLineNumbers
+sudo -I
+
+# get the pods on <namespace>
+k get pods -n <namespace>
+k logs benjaminie-ww-sfsd -n <namespace> --timestamps
+# the log id will change everyday so need to check the pod name again
+
+# delete pods
+k delete pods benjaminie-ww-sfsd -n <namespace>
+
+# check pods details
+k describe pods benjaminie-ww-sfsd -n <namespace>
+
+# delete evicted pods all
+k get pods -n dev-uc | grep Evicted | awk '{print $1}' | xargs k delete pod -n dev-uc
+
+# view live logs from all running pods
+k logs -f -n <namespace> app=benjamine--all-containers=true
+
+# to get the app lavel
+k get pods -n <namespace> --show-labels
+```
+
+## Accessing DB on RDS
+
+To access the database on RDS, you can use the following command:
+
+```bash showLineNumbers
+psql -host=<rds-endpoint> -port=5432 --username=<username> --password --dbname=<dbname>
 ```
