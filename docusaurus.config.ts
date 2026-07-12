@@ -28,15 +28,15 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  url: 'https://keantengdocs.github.io',
+  url: 'https://keanteng.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/keantengdocs/',
+  baseUrl: '/docs-migrate/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'keanteng', // Usually your GitHub org/user name.
-  projectName: 'keantengdocs', // Usually your repo name.
+  projectName: 'docs-migrate', // Usually your repo name.
 
   onBrokenLinks: 'throw',
 
@@ -71,7 +71,7 @@ const config: Config = {
           sidebarPath: './sidebars.ts',
           showLastUpdateTime: true,
           editUrl:
-            'https://github.com/keanteng/keantengdocs/tree/main/',
+            'https://github.com/keanteng/docs-migrate/tree/main/',
         },
         blog: false,
         theme: {
@@ -91,7 +91,7 @@ const config: Config = {
       title: 'Kean Teng Docs',
       items: [
         {
-          href: 'https://github.com/keanteng/keantengdocs',
+          href: 'https://github.com/keanteng/docs-migrate',
           label: 'GitHub',
           position: 'right',
         },
@@ -113,7 +113,7 @@ const config: Config = {
         {
           title: 'More',
           items: [
-            { label: 'GitHub', href: 'https://github.com/keanteng/keantengdocs' },
+            { label: 'GitHub', href: 'https://github.com/keanteng/docs-migrate' },
           ],
         },
       ],
